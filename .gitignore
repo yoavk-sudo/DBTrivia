@@ -2,6 +2,14 @@
 #
 # Get latest from https://github.com/github/gitignore/blob/main/Unity.gitignore
 #
+DBTrivia/[Ll]ibrary/
+DBTrivia/[Tt]emp/
+DBTrivia/[Oo]bj/
+DBTrivia/[Bb]uild/
+DBTrivia/[Bb]uilds/
+DBTrivia/[Ll]ogs/
+DBTrivia/[Uu]ser[Ss]ettings/
+
 /[Ll]ibrary/
 /[Tt]emp/
 /[Oo]bj/
