@@ -6,24 +6,23 @@ using System;
 using System.Data;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class Login : MonoBehaviour
 {
-    [SerializeField] TextMeshProUGUI Player1;
-    [SerializeField] TextMeshProUGUI Player2;
+    [SerializeField] TMP_InputField Player1;
+    [SerializeField] TMP_InputField Player2; 
 
     public void UpdatePlayerName()
     {
-        if (!string.IsNullOrEmpty(Player1.text) && !string.IsNullOrEmpty(Player2.text))
+        if (Player1.text != "" && Player2.text != "")
         {
-            Debug.Log(Player1.text == "noga");
             SceneManager.LoadScene(2);
         }
 
         StartCoroutine(CourntineUpdatePlayerName(Player1.text, Player2.text));
     }
 
-    [Obsolete]
     IEnumerator CourntineUpdatePlayerName(string Name1, string Name2)
     {
         string encodedName1 = Uri.EscapeDataString(Name1);
