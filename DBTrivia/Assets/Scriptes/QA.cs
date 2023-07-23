@@ -13,6 +13,8 @@ public class QA : MonoBehaviour
     [SerializeField] TextMeshProUGUI Answer2;
     [SerializeField] TextMeshProUGUI Answer3;
     [SerializeField] TextMeshProUGUI Answer4;
+    [SerializeField] TextMeshProUGUI NamePlayer1;
+    [SerializeField] TextMeshProUGUI NamePlayer2;
     [SerializeField] Button ClickedButton1;
     [SerializeField] Button ClickedButton2;
     [SerializeField] Button ClickedButton3;
@@ -30,6 +32,9 @@ public class QA : MonoBehaviour
         StartCoroutine(GetQuestion(QuestionsId));
 
         StartCoroutine(GetAnswer(AnswerId));
+
+        NamePlayer1.text = Login.Player1Name;
+        NamePlayer2.text = Login.Player2Name;
     }
 
     IEnumerator GetQuestion(int QuestionsId)

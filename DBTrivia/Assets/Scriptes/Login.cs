@@ -13,6 +13,9 @@ public class Login : MonoBehaviour
     [SerializeField] TMP_InputField Player1;
     [SerializeField] TMP_InputField Player2; 
 
+    public static string Player1Name;
+    public static string Player2Name;
+
     public void UpdatePlayerName()
     {
         if (Player1.text != "" && Player2.text != "")
@@ -21,6 +24,10 @@ public class Login : MonoBehaviour
         }
 
         StartCoroutine(CourntineUpdatePlayerName(Player1.text, Player2.text));
+
+        Player1Name = Player1.text;
+
+        Player2Name = Player2.text;
     }
 
     IEnumerator CourntineUpdatePlayerName(string Name1, string Name2)
