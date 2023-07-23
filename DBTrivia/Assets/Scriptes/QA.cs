@@ -113,52 +113,132 @@ public class QA : MonoBehaviour
             Answer3.text = items[2];
             Answer4.text = items[3];
 
-            if (ClickedButton1.tag == "1")
+            GameObject clickedButton = UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject;
+            string clickedTag = clickedButton.tag;
+
+            if (clickedButton.CompareTag(clickedTag))
             {
-                if (ClickedButton1.GetComponentInChildren<TextMeshProUGUI>().text == items[0])
+                // Perform actions specific to the clicked button's tag
+                switch (clickedTag)
                 {
-                    Debug.Log(items[0]);
+                    case "1":
+                        if (clickedButton.GetComponentInChildren<TextMeshProUGUI>().text == items[0])
+                        {
+                            QuestionsId += 1;
+                            StartCoroutine(GetQuestion(QuestionsId));
 
-                    QuestionsId += 1;
-                    StartCoroutine(GetQuestion(QuestionsId));
+                            AnswerId += 1;
+                            StartCoroutine(GetAnswer(AnswerId));
 
-                    AnswerId += 1;
-                    StartCoroutine(GetAnswer(AnswerId));
+                            if (tag == "1")
+                            {
+                                StartCoroutine(Score.UpdateScorePlayer1(Player1Score += 1));
 
-                    if (tag == "1")
-                    {
-                        StartCoroutine(Score.UpdateScorePlayer1(Player1Score += 1));
+                                ScorePlayer1.text = Player1Score.ToString();
+                            }
 
-                        ScorePlayer1.text = Player1Score.ToString();
-                    }
+                            else if (tag == "2")
+                            {
+                                StartCoroutine(Score.UpdateScorePlayer2(Player2Score += 1));
 
-                    else if(tag == "2")
-                    {
-                        StartCoroutine(Score.UpdateScorePlayer2(Player2Score += 1));
+                                ScorePlayer2.text = Player2Score.ToString();
+                            }
 
-                        ScorePlayer2.text = Player2Score.ToString();
-                    }
-                }
-            }
+                            ClickedButton1.image.color = Color.green;
 
-            if (ClickedButton2.tag == "2")
-            {
-                if (ClickedButton2.GetComponentInChildren<TextMeshProUGUI>().text == items[0])
-                {
-                }
-            }
+                            yield return new WaitForSeconds(1);
 
-            if (ClickedButton3.tag == "3")
-            {
-                if (ClickedButton3.GetComponentInChildren<TextMeshProUGUI>().text == items[0])
-                {
-                }
-            }
+                            ClickedButton1.image.color = Color.white;
+                        }
 
-            if (ClickedButton4.tag == "4")
-            {
-                if (ClickedButton4.GetComponentInChildren<TextMeshProUGUI>().text == items[0])
-                {
+                        break;
+
+                    case "2":
+                        QuestionsId += 1;
+                        StartCoroutine(GetQuestion(QuestionsId));
+
+                        AnswerId += 1;
+                        StartCoroutine(GetAnswer(AnswerId));
+
+                        if (tag == "1")
+                        {
+                            StartCoroutine(Score.UpdateScorePlayer1(Player1Score));
+
+                            ScorePlayer1.text = Player1Score.ToString();
+                        }
+
+                        else if (tag == "2")
+                        {
+                            StartCoroutine(Score.UpdateScorePlayer2(Player2Score));
+
+                            ScorePlayer2.text = Player2Score.ToString();
+                        }
+
+                        ClickedButton2.image.color = Color.red;
+
+                        yield return new WaitForSeconds(1);
+
+                        ClickedButton2.image.color = Color.white;
+
+                        break;
+
+                    case "3":
+                        QuestionsId += 1;
+                        StartCoroutine(GetQuestion(QuestionsId));
+
+                        AnswerId += 1;
+                        StartCoroutine(GetAnswer(AnswerId));
+
+                        if (tag == "1")
+                        {
+                            StartCoroutine(Score.UpdateScorePlayer1(Player1Score));
+
+                            ScorePlayer1.text = Player1Score.ToString();
+                        }
+
+                        else if (tag == "2")
+                        {
+                            StartCoroutine(Score.UpdateScorePlayer2(Player2Score));
+
+                            ScorePlayer2.text = Player2Score.ToString();
+                        }
+
+                        ClickedButton3.image.color = Color.red;
+
+                        yield return new WaitForSeconds(1);
+
+                        ClickedButton3.image.color = Color.white;
+
+                        break;
+
+                    case "4":
+                        QuestionsId += 1;
+                        StartCoroutine(GetQuestion(QuestionsId));
+
+                        AnswerId += 1;
+                        StartCoroutine(GetAnswer(AnswerId));
+
+                        if (tag == "1")
+                        {
+                            StartCoroutine(Score.UpdateScorePlayer1(Player1Score += 1));
+
+                            ScorePlayer1.text = Player1Score.ToString();
+                        }
+
+                        else if (tag == "2")
+                        {
+                            StartCoroutine(Score.UpdateScorePlayer2(Player2Score += 1));
+
+                            ScorePlayer2.text = Player2Score.ToString();
+                        }
+
+                        ClickedButton4.image.color = Color.red;
+
+                        yield return new WaitForSeconds(1);
+
+                        ClickedButton4.image.color = Color.white;
+
+                        break;
                 }
             }
         }
