@@ -57,9 +57,15 @@ public class QA : MonoBehaviour
 
             Questions.text = www.downloadHandler.text;
         }
+
+        if (QuestionsId == 5)
+        {
+            DeclareWinner.PlayerFinished += 1;
+            Debug.Log(DeclareWinner.PlayerFinished);
+        }
     }
 
-    IEnumerator GetAnswer(int AnswerId)
+        IEnumerator GetAnswer(int AnswerId)
     {
         UnityWebRequest www = UnityWebRequest.Get("https://localhost:44310/api/GetAnswers?AnswerID=" + AnswerId);
         yield return www.Send();
@@ -247,6 +253,22 @@ public class QA : MonoBehaviour
     {
         if(AnswerId == 5)
         {
+            if(tag == "1")
+            {
+                ClickedButton1.enabled = false;
+                ClickedButton2.enabled = false;
+                ClickedButton3.enabled = false;
+                ClickedButton4.enabled = false;
+            }
+
+            if (tag == "2")
+            {
+                ClickedButton1.enabled = false;
+                ClickedButton2.enabled = false;
+                ClickedButton3.enabled = false;
+                ClickedButton4.enabled = false;
+            }
+
             return;
         }
 
