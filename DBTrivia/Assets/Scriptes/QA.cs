@@ -25,8 +25,8 @@ public class QA : MonoBehaviour
     public int QuestionsId = 1;
     public int AnswerId = 1;
 
-    int Player1Score = 0;
-    int Player2Score = 0;
+    public static int Player1Score = 0;
+    public static int Player2Score = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -225,14 +225,14 @@ public class QA : MonoBehaviour
 
                         if (tag == "1")
                         {
-                            StartCoroutine(Score.UpdateScorePlayer1(Player1Score += 1));
+                            StartCoroutine(Score.UpdateScorePlayer1(Player1Score));
 
                             ScorePlayer1.text = Player1Score.ToString();
                         }
 
                         else if (tag == "2")
                         {
-                            StartCoroutine(Score.UpdateScorePlayer2(Player2Score += 1));
+                            StartCoroutine(Score.UpdateScorePlayer2(Player2Score));
 
                             ScorePlayer2.text = Player2Score.ToString();
                         }

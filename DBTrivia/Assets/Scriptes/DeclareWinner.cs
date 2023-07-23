@@ -5,7 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class DeclareWinner : MonoBehaviour
 {
-
     public static int PlayerFinished = 0;
 
     // Update is called once per frame
