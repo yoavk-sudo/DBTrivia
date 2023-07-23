@@ -118,7 +118,6 @@ public class QA : MonoBehaviour
 
             if (clickedButton.CompareTag(clickedTag))
             {
-                // Perform actions specific to the clicked button's tag
                 switch (clickedTag)
                 {
                     case "1":
@@ -246,15 +245,13 @@ public class QA : MonoBehaviour
 
     public void PlayerAnswer()
     {
-        if (AnswerId == 4)
+        if(AnswerId == 5)
         {
             return;
         }
 
         StartCoroutine(CheckAnswer(QuestionsId, AnswerId));
-
         AnswerId += 1;
-
         QuestionsId += 1;
     }
 }
