@@ -15,6 +15,8 @@ public class QA : MonoBehaviour
     [SerializeField] TextMeshProUGUI Answer4;
     [SerializeField] TextMeshProUGUI NamePlayer1;
     [SerializeField] TextMeshProUGUI NamePlayer2;
+    [SerializeField] TextMeshProUGUI ScorePlayer1;
+    [SerializeField] TextMeshProUGUI ScorePlayer2;
     [SerializeField] Button ClickedButton1;
     [SerializeField] Button ClickedButton2;
     [SerializeField] Button ClickedButton3;
@@ -126,11 +128,15 @@ public class QA : MonoBehaviour
                     if (tag == "1")
                     {
                         StartCoroutine(Score.UpdateScorePlayer1(Player1Score += 1));
+
+                        ScorePlayer1.text = Player1Score.ToString();
                     }
 
                     else if(tag == "2")
                     {
                         StartCoroutine(Score.UpdateScorePlayer2(Player2Score += 1));
+
+                        ScorePlayer2.text = Player2Score.ToString();
                     }
                 }
             }
