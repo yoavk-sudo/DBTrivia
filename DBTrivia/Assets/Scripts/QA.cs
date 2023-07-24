@@ -1,7 +1,6 @@
 using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using TMPro;
+using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 
@@ -40,7 +39,7 @@ public class QA : MonoBehaviour
         NamePlayer2.text = Login.Player2Name;
         timeHandler.SetPlayer1Time(10);
         timeHandler.SetPlayer2Time(10);
-        if(tag == "1")
+        if (tag == "1")
         {
             timeHandler.onPlayer1ReachZero += onTimeUp;
         }
@@ -78,7 +77,7 @@ public class QA : MonoBehaviour
         }
     }
 
-        IEnumerator GetAnswer(int AnswerId)
+    IEnumerator GetAnswer(int AnswerId)
     {
         UnityWebRequest www = UnityWebRequest.Get("https://localhost:44310/api/GetAnswers?AnswerID=" + AnswerId);
         yield return www.Send();
@@ -294,9 +293,9 @@ public class QA : MonoBehaviour
 
     public void PlayerAnswer()
     {
-        if(AnswerId == 5)
+        if (AnswerId == 5)
         {
-            if(tag == "1")
+            if (tag == "1")
             {
                 ClickedButton1.enabled = false;
                 ClickedButton2.enabled = false;
@@ -326,7 +325,14 @@ public class QA : MonoBehaviour
         QuestionsId += 1;
         StartCoroutine(GetAnswer(AnswerId));
         StartCoroutine(GetQuestion(QuestionsId));
-
+        if (tag == "1")
+        {
+            timeHandler.SetPlayer1Time(10);
+        }
+        else
+        {
+            timeHandler.SetPlayer2Time(10);
+        }
 
     }
 }
