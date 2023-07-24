@@ -21,6 +21,7 @@ public class QA : MonoBehaviour
     [SerializeField] Button ClickedButton2;
     [SerializeField] Button ClickedButton3;
     [SerializeField] Button ClickedButton4;
+    [SerializeField] TimeHandler timeHandler;
 
     public int QuestionsId = 1;
     public int AnswerId = 1;
@@ -37,6 +38,18 @@ public class QA : MonoBehaviour
 
         NamePlayer1.text = Login.Player1Name;
         NamePlayer2.text = Login.Player2Name;
+        timeHandler.SetPlayer1Time(10);
+        timeHandler.SetPlayer2Time(10);
+        if(tag == "1")
+        {
+            timeHandler.onPlayer1ReachZero += onTimeUp;
+        }
+        else
+        {
+            timeHandler.onPlayer2ReachZero += onTimeUp;
+
+        }
+
     }
 
     IEnumerator GetQuestion(int QuestionsId)
@@ -140,6 +153,8 @@ public class QA : MonoBehaviour
                                 StartCoroutine(Score.UpdateScorePlayer1(Player1Score += 1));
 
                                 ScorePlayer1.text = Player1Score.ToString();
+                                timeHandler.Player1UpdatePoints();
+                                timeHandler.SetPlayer1Time(10);
                             }
 
                             else if (tag == "2")
@@ -147,6 +162,10 @@ public class QA : MonoBehaviour
                                 StartCoroutine(Score.UpdateScorePlayer2(Player2Score += 1));
 
                                 ScorePlayer2.text = Player2Score.ToString();
+                                timeHandler.Player2UpdatePoints();
+
+                                timeHandler.SetPlayer2Time(10);
+
                             }
 
                             ClickedButton1.image.color = Color.green;
@@ -170,6 +189,10 @@ public class QA : MonoBehaviour
                             StartCoroutine(Score.UpdateScorePlayer1(Player1Score));
 
                             ScorePlayer1.text = Player1Score.ToString();
+                            timeHandler.Player1UpdatePoints();
+
+                            timeHandler.SetPlayer1Time(10);
+
                         }
 
                         else if (tag == "2")
@@ -177,6 +200,10 @@ public class QA : MonoBehaviour
                             StartCoroutine(Score.UpdateScorePlayer2(Player2Score));
 
                             ScorePlayer2.text = Player2Score.ToString();
+                            timeHandler.Player2UpdatePoints();
+
+                            timeHandler.SetPlayer2Time(10);
+
                         }
 
                         ClickedButton2.image.color = Color.red;
@@ -199,6 +226,10 @@ public class QA : MonoBehaviour
                             StartCoroutine(Score.UpdateScorePlayer1(Player1Score));
 
                             ScorePlayer1.text = Player1Score.ToString();
+                            timeHandler.Player1UpdatePoints();
+
+                            timeHandler.SetPlayer1Time(10);
+
                         }
 
                         else if (tag == "2")
@@ -206,6 +237,10 @@ public class QA : MonoBehaviour
                             StartCoroutine(Score.UpdateScorePlayer2(Player2Score));
 
                             ScorePlayer2.text = Player2Score.ToString();
+                            timeHandler.Player2UpdatePoints();
+
+                            timeHandler.SetPlayer2Time(10);
+
                         }
 
                         ClickedButton3.image.color = Color.red;
@@ -228,6 +263,10 @@ public class QA : MonoBehaviour
                             StartCoroutine(Score.UpdateScorePlayer1(Player1Score));
 
                             ScorePlayer1.text = Player1Score.ToString();
+                            timeHandler.Player1UpdatePoints();
+
+                            timeHandler.SetPlayer1Time(10);
+
                         }
 
                         else if (tag == "2")
@@ -235,6 +274,10 @@ public class QA : MonoBehaviour
                             StartCoroutine(Score.UpdateScorePlayer2(Player2Score));
 
                             ScorePlayer2.text = Player2Score.ToString();
+                            timeHandler.Player2UpdatePoints();
+
+                            timeHandler.SetPlayer2Time(10);
+
                         }
 
                         ClickedButton4.image.color = Color.red;
@@ -275,5 +318,15 @@ public class QA : MonoBehaviour
         StartCoroutine(CheckAnswer(QuestionsId, AnswerId));
         AnswerId += 1;
         QuestionsId += 1;
+    }
+
+    private void onTimeUp()
+    {
+        AnswerId += 1;
+        QuestionsId += 1;
+        StartCoroutine(GetAnswer(AnswerId));
+        StartCoroutine(GetQuestion(QuestionsId));
+
+
     }
 }
