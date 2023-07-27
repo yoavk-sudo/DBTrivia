@@ -20,9 +20,9 @@ namespace Server.Controllers
         // GET api/values/5
         //public string Get()
         //{
-            //DataBaseMananger dbman = new DataBaseMananger();
-            //string Name = dbman.GetPlayerName(1);
-            //return Name;
+        //DataBaseMananger dbman = new DataBaseMananger();
+        //string Name = dbman.GetPlayerName(1);
+        //return Name;
         //}
 
         // POST api/values

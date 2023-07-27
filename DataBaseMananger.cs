@@ -120,24 +120,53 @@ namespace Server
 
         }
 
-        internal string SetPlayer(string name1, string name2)
+        internal string SetPlayer(string name1)
         {
             string result;
             try
             {
                 Connect();
                 string query1 = "UPDATE players SET name = '" + name1 + "' WHERE IdPlayers = 1";
-                string query2 = "UPDATE players SET name = '" + name2 + "' WHERE IdPlayers = 2";
+                //string query2 = "UPDATE players SET name = '" + name2 + "' WHERE IdPlayers = 2";
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.Connection = con;
                 cmd.CommandText = query1;
                 cmd.Parameters.AddWithValue("@name1", name1);
                 cmd.ExecuteNonQuery();
 
+                //cmd.CommandText = query2;
+                //cmd.Parameters.Clear();
+                //cmd.Parameters.AddWithValue("@name2", name2);
+                //cmd.ExecuteNonQuery();
+
+                result = "Success";
+            }
+            catch (Exception ex)
+            {
+                result = ex.Message;
+                Disconnect();
+                return result;
+            }
+            return result;
+        }
+
+        internal string SetPlayer1(string name2)
+        {
+            string result;
+            try
+            {
+                Connect();
+                string query2 = "UPDATE players SET name = '" + name2 + "' WHERE IdPlayers = 2";
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.Connection = con;
                 cmd.CommandText = query2;
-                cmd.Parameters.Clear();
                 cmd.Parameters.AddWithValue("@name2", name2);
                 cmd.ExecuteNonQuery();
+
+                //cmd.CommandText = query2;
+                //cmd.Parameters.Clear();
+                //cmd.Parameters.AddWithValue("@name2", name2);
+                //cmd.ExecuteNonQuery();
 
                 result = "Success";
             }
@@ -171,6 +200,264 @@ namespace Server
                 else
                 {
                     // No rows were updated, player with specified IdPlayers not found.
+                    return 0;
+                }
+            }
+            catch
+            {
+                Disconnect();
+                return 0;
+            }
+        }
+
+        public int UpdatePlayer1State(int PlayerState)
+        {
+            try
+            {
+                Connect();
+                string query = "UPDATE players SET Login = @PlayerState WHERE IdPlayers =1";
+                cmd = new MySqlCommand(query, con);
+                cmd.Parameters.AddWithValue("@PlayerState", PlayerState);
+                int rowsAffected = cmd.ExecuteNonQuery();
+
+                Disconnect();
+
+                if (rowsAffected > 0)
+                {
+                    // Update successful, no need to read data, just return the new score.
+                    return PlayerState;
+                }
+                else
+                {
+                    // No rows were updated, player with specified IdPlayers not found.
+                    return 0;
+                }
+            }
+            catch
+            {
+                Disconnect();
+                return 0;
+            }
+        }
+
+        public int UpdatePlayer2State(int PlayerState2)
+        {
+            try
+            {
+                Connect();
+                string query = "UPDATE players SET Login = @PlayerState WHERE IdPlayers =2";
+                cmd = new MySqlCommand(query, con);
+                cmd.Parameters.AddWithValue("@PlayerState", PlayerState2);
+                int rowsAffected = cmd.ExecuteNonQuery();
+
+                Disconnect();
+
+                if (rowsAffected > 0)
+                {
+                    // Update successful, no need to read data, just return the new score.
+                    return PlayerState2;
+                }
+                else
+                {
+                    // No rows were updated, player with specified IdPlayers not found.
+                    return 0;
+                }
+            }
+            catch
+            {
+                Disconnect();
+                return 0;
+            }
+        }
+
+        public int CheckPlayerState(int IdPlayer)
+        {
+            try
+            {
+                Connect();
+                string query = "SELECT Login FROM game.players where IdPlayers =" + IdPlayer;
+                cmd = new MySqlCommand(query, con);
+                reader = cmd.ExecuteReader();
+                if (reader.Read())
+                {
+                    int Login = reader.GetInt32("Login");
+                    Disconnect();
+                    return Login;
+                }
+                else
+                {
+                    Disconnect();
+                    return 0;
+                }
+            }
+            catch
+            {
+                Disconnect();
+                return 0;
+            }
+        }
+
+
+        public int GetScorePlayer1(int PlayerId)
+        {
+            try
+            {
+                Connect();
+                string query = "SELECT score FROM players WHERE IdPlayers =" + PlayerId;
+                cmd = new MySqlCommand(query, con);
+                reader = cmd.ExecuteReader();
+                if (reader.Read())
+                {
+                    int Score = reader.GetInt32("score");
+                    Disconnect();
+                    return Score;
+                }
+                else
+                {
+                    Disconnect();
+                    return 0;
+                }
+            }
+            catch
+            {
+                Disconnect();
+                return 0;
+            }
+
+        }
+
+        public int GetScorePlayer2(int PlayerId)
+        {
+            try
+            {
+                Connect();
+                string query = "SELECT score FROM players WHERE IdPlayers =" + PlayerId;
+                cmd = new MySqlCommand(query, con);
+                reader = cmd.ExecuteReader();
+                if (reader.Read())
+                {
+                    int Score = reader.GetInt32("score");
+                    Disconnect();
+                    return Score;
+                }
+                else
+                {
+                    Disconnect();
+                    return 0;
+                }
+            }
+            catch
+            {
+                Disconnect();
+                return 0;
+            }
+
+        }
+
+        public int UpdatePlayerTime(int PlayerId, int Time)
+        {
+            try
+            {
+                Connect();
+                string query = "UPDATE players SET Time = @Time WHERE IdPlayers =" + PlayerId;
+                cmd = new MySqlCommand(query, con);
+                cmd.Parameters.AddWithValue("@Time", Time);
+                int rowsAffected = cmd.ExecuteNonQuery();
+
+                Disconnect();
+
+                if (rowsAffected > 0)
+                {
+                    // Update successful, no need to read data, just return the new score.
+                    return 0;
+                }
+                else
+                {
+                    // No rows were updated, player with specified IdPlayers not found.
+                    return 0;
+                }
+            }
+            catch
+            {
+                Disconnect();
+                return 0;
+            }
+        }
+
+        public int GetPlayerTime(int PlayerId)
+        {
+            try
+            {
+                Connect();
+                string query = "Select Time from players WHERE IdPlayers =" + PlayerId;
+                cmd = new MySqlCommand(query, con);
+                reader = cmd.ExecuteReader();
+                if (reader.Read())
+                {
+                    int Time = reader.GetInt32("Time");
+                    Disconnect();
+                    return Time;
+                }
+                else
+                {
+                    Disconnect();
+                    return 0;
+                }
+            }
+            catch
+            {
+                Disconnect();
+                return 0;
+            }
+        }
+
+        public int UpdatePlayerFinished(int PlayerState)
+        {
+            try
+            {
+                Connect();
+                string query = "UPDATE players SET Finished = 1 WHERE IdPlayers ="  + PlayerState;
+                cmd = new MySqlCommand(query, con);
+                cmd.Parameters.AddWithValue("@PlayerState", PlayerState);
+                int rowsAffected = cmd.ExecuteNonQuery();
+
+                Disconnect();
+
+                if (rowsAffected > 0)
+                {
+                    // Update successful, no need to read data, just return the new score.
+                    return PlayerState;
+                }
+                else
+                {
+                    // No rows were updated, player with specified IdPlayers not found.
+                    return 0;
+                }
+            }
+            catch
+            {
+                Disconnect();
+                return 0;
+            }
+        }
+
+        public int CheckPlayerFinished(int IdPlayer)
+        {
+            try
+            {
+                Connect();
+                string query = "Select Finished from players WHERE IdPlayers =" + IdPlayer;
+                cmd = new MySqlCommand(query, con);
+                reader = cmd.ExecuteReader();
+                if (reader.Read())
+                {
+                    int Login = reader.GetInt32("Finished");
+                    Disconnect();
+                    return Login;
+                }
+                else
+                {
+                    Disconnect();
                     return 0;
                 }
             }
