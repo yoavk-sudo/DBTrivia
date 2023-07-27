@@ -2,6 +2,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class QA : MonoBehaviour
@@ -24,10 +25,12 @@ public class QA : MonoBehaviour
 
     public int QuestionsId = 1;
     public int AnswerId = 1;
+    public int SumTime;
 
     public static int Player1Score = 0;
     public static int Player2Score = 0;
 
+    public static string PlayerWon;
     // Start is called before the first frame update
     void Start()
     {
@@ -36,22 +39,22 @@ public class QA : MonoBehaviour
         StartCoroutine(GetAnswer(AnswerId));
 
         NamePlayer1.text = Login.Player1Name;
-        NamePlayer2.text = Login.Player2Name;
-        timeHandler.SetPlayer1Time(10);
-        timeHandler.SetPlayer2Time(10);
-        if (tag == "1")
-        {
-            timeHandler.onPlayer1ReachZero += onTimeUp;
-        }
-        else
-        {
-            timeHandler.onPlayer2ReachZero += onTimeUp;
+        //NamePlayer2.text = Login.Player2Name;
+        //timeHandler.SetPlayer1Time(10);
+        //timeHandler.SetPlayer2Time(10);
+        //if (tag == "1")
+        //{
+        //    timeHandler.onPlayer1ReachZero += onTimeUp;
+        //}
+        //else
+        //{
+        //    timeHandler.onPlayer2ReachZero += onTimeUp;
 
-        }
+        //}
 
     }
 
-    IEnumerator GetQuestion(int QuestionsId)
+    public IEnumerator GetQuestion(int QuestionsId)
     {
         //UnityWebRequest www = UnityWebRequest.Get("https://localhost:44310/api/GetQuestions?QuestionID=" + QuestionsId + "");
         UnityWebRequest www = UnityWebRequest.Get("https://localhost:44310/api/GetQuestions?QuestionID=" + QuestionsId);
@@ -72,12 +75,29 @@ public class QA : MonoBehaviour
 
         if (QuestionsId == 5)
         {
-            DeclareWinner.PlayerFinished += 1;
-            Debug.Log(DeclareWinner.PlayerFinished);
+            if (Score.NumberPlayer1Score > Score.NumberPlayer2Score)
+            {
+                SceneManager.LoadScene(3);
+
+                PlayerWon = "Won";
+            }
+
+            if (Score.NumberPlayer1Score == Score.NumberPlayer2Score)
+            {
+                SceneManager.LoadScene(3);
+            }
+
+
+            if (Score.NumberPlayer1Score < Score.NumberPlayer2Score)
+            {
+                SceneManager.LoadScene(3);
+
+                PlayerWon = "Lost";
+            }
         }
     }
 
-    IEnumerator GetAnswer(int AnswerId)
+    public IEnumerator GetAnswer(int AnswerId)
     {
         UnityWebRequest www = UnityWebRequest.Get("https://localhost:44310/api/GetAnswers?AnswerID=" + AnswerId);
         yield return www.Send();
@@ -152,8 +172,6 @@ public class QA : MonoBehaviour
                                 StartCoroutine(Score.UpdateScorePlayer1(Player1Score += 1));
 
                                 ScorePlayer1.text = Player1Score.ToString();
-                                timeHandler.Player1UpdatePoints();
-                                timeHandler.SetPlayer1Time(10);
                             }
 
                             else if (tag == "2")
@@ -161,10 +179,6 @@ public class QA : MonoBehaviour
                                 StartCoroutine(Score.UpdateScorePlayer2(Player2Score += 1));
 
                                 ScorePlayer2.text = Player2Score.ToString();
-                                timeHandler.Player2UpdatePoints();
-
-                                timeHandler.SetPlayer2Time(10);
-
                             }
 
                             ClickedButton1.image.color = Color.green;
@@ -188,10 +202,6 @@ public class QA : MonoBehaviour
                             StartCoroutine(Score.UpdateScorePlayer1(Player1Score));
 
                             ScorePlayer1.text = Player1Score.ToString();
-                            timeHandler.Player1UpdatePoints();
-
-                            timeHandler.SetPlayer1Time(10);
-
                         }
 
                         else if (tag == "2")
@@ -199,10 +209,6 @@ public class QA : MonoBehaviour
                             StartCoroutine(Score.UpdateScorePlayer2(Player2Score));
 
                             ScorePlayer2.text = Player2Score.ToString();
-                            timeHandler.Player2UpdatePoints();
-
-                            timeHandler.SetPlayer2Time(10);
-
                         }
 
                         ClickedButton2.image.color = Color.red;
@@ -225,10 +231,6 @@ public class QA : MonoBehaviour
                             StartCoroutine(Score.UpdateScorePlayer1(Player1Score));
 
                             ScorePlayer1.text = Player1Score.ToString();
-                            timeHandler.Player1UpdatePoints();
-
-                            timeHandler.SetPlayer1Time(10);
-
                         }
 
                         else if (tag == "2")
@@ -236,10 +238,6 @@ public class QA : MonoBehaviour
                             StartCoroutine(Score.UpdateScorePlayer2(Player2Score));
 
                             ScorePlayer2.text = Player2Score.ToString();
-                            timeHandler.Player2UpdatePoints();
-
-                            timeHandler.SetPlayer2Time(10);
-
                         }
 
                         ClickedButton3.image.color = Color.red;
@@ -262,10 +260,6 @@ public class QA : MonoBehaviour
                             StartCoroutine(Score.UpdateScorePlayer1(Player1Score));
 
                             ScorePlayer1.text = Player1Score.ToString();
-                            timeHandler.Player1UpdatePoints();
-
-                            timeHandler.SetPlayer1Time(10);
-
                         }
 
                         else if (tag == "2")
@@ -273,9 +267,6 @@ public class QA : MonoBehaviour
                             StartCoroutine(Score.UpdateScorePlayer2(Player2Score));
 
                             ScorePlayer2.text = Player2Score.ToString();
-                            timeHandler.Player2UpdatePoints();
-
-                            timeHandler.SetPlayer2Time(10);
 
                         }
 
@@ -317,22 +308,9 @@ public class QA : MonoBehaviour
         StartCoroutine(CheckAnswer(QuestionsId, AnswerId));
         AnswerId += 1;
         QuestionsId += 1;
-    }
 
-    private void onTimeUp()
-    {
-        AnswerId += 1;
-        QuestionsId += 1;
-        StartCoroutine(GetAnswer(AnswerId));
-        StartCoroutine(GetQuestion(QuestionsId));
-        if (tag == "1")
-        {
-            timeHandler.SetPlayer1Time(10);
-        }
-        else
-        {
-            timeHandler.SetPlayer2Time(10);
-        }
-
+        SumTime += (int)tIMER.PlayerTimer;
+        Debug.Log(SumTime);
+        tIMER.PlayerTimer = 10;
     }
 }

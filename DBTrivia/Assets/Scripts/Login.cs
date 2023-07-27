@@ -11,31 +11,50 @@ using UnityEngine.UI;
 public class Login : MonoBehaviour
 {
     [SerializeField] TMP_InputField Player1;
-    [SerializeField] TMP_InputField Player2; 
+    [SerializeField] GameObject WaitText;
 
     public static string Player1Name;
-    public static string Player2Name;
 
     public void UpdatePlayerName()
     {
-        if (Player1.text != "" && Player2.text != "")
+        if (Player1.text != "")
         {
-            SceneManager.LoadScene(2);
+            StartCoroutine(PlayerStatus());
         }
 
-        StartCoroutine(CourntineUpdatePlayerName(Player1.text, Player2.text));
+        StartCoroutine(CourntineUpdatePlayerName(Player1.text));
 
         Player1Name = Player1.text;
 
-        Player2Name = Player2.text;
+        WaitText.SetActive(true);
+
+        //Player2Name = Player2.text;
     }
 
-    IEnumerator CourntineUpdatePlayerName(string Name1, string Name2)
+    IEnumerator PlayerStatus()
+    {
+        string url = "https://localhost:44310/api/Values?PlayerState1=1";
+
+        UnityWebRequest www = UnityWebRequest.Get(url);
+
+        yield return www.Send();
+
+        if (www.isNetworkError || www.isHttpError)
+        {
+            Debug.LogError("Network error: " + www.error);
+        }
+        else
+        {
+            Debug.Log("Player Status: " + www.downloadHandler.text);
+        }
+    }
+
+    IEnumerator CourntineUpdatePlayerName(string Name1)
     {
         string encodedName1 = Uri.EscapeDataString(Name1);
-        string encodedName2 = Uri.EscapeDataString(Name2);
+        //string encodedName2 = Uri.EscapeDataString(Name2);
 
-        string url = "https://localhost:44310/api/Values?name1=" + encodedName1 + "&name2=" + encodedName2;
+        string url = "https://localhost:44310/api/Values?name1=" + encodedName1;
         UnityWebRequest www = UnityWebRequest.Get(url);
 
         yield return www.Send();
