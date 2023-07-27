@@ -27,8 +27,6 @@ public class Login : MonoBehaviour
         Player1Name = Player1.text;
 
         WaitText.SetActive(true);
-
-        //Player2Name = Player2.text;
     }
 
     IEnumerator PlayerStatus()

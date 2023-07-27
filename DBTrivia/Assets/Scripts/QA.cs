@@ -21,7 +21,6 @@ public class QA : MonoBehaviour
     [SerializeField] Button ClickedButton2;
     [SerializeField] Button ClickedButton3;
     [SerializeField] Button ClickedButton4;
-    [SerializeField] TimeHandler timeHandler;
 
     public int QuestionsId = 1;
     public int AnswerId = 1;
@@ -39,24 +38,20 @@ public class QA : MonoBehaviour
         StartCoroutine(GetAnswer(AnswerId));
 
         NamePlayer1.text = Login.Player1Name;
-        //NamePlayer2.text = Login.Player2Name;
-        //timeHandler.SetPlayer1Time(10);
-        //timeHandler.SetPlayer2Time(10);
-        //if (tag == "1")
-        //{
-        //    timeHandler.onPlayer1ReachZero += onTimeUp;
-        //}
-        //else
-        //{
-        //    timeHandler.onPlayer2ReachZero += onTimeUp;
+    }
 
-        //}
+    private void Update()
+    {
+        StartCoroutine(Score.CheckFinish());
 
+        if (QuestionsId == 5)
+        {
+            StartCoroutine(Score.UpdateFinish(1));
+        }
     }
 
     public IEnumerator GetQuestion(int QuestionsId)
     {
-        //UnityWebRequest www = UnityWebRequest.Get("https://localhost:44310/api/GetQuestions?QuestionID=" + QuestionsId + "");
         UnityWebRequest www = UnityWebRequest.Get("https://localhost:44310/api/GetQuestions?QuestionID=" + QuestionsId);
         yield return www.Send();
 
@@ -73,29 +68,48 @@ public class QA : MonoBehaviour
             Questions.text = www.downloadHandler.text;
         }
 
-        if (QuestionsId == 5)
+        if (QuestionsId == 5 && Score.FinishedGame == 1)
         {
             if (Score.NumberPlayer1Score > Score.NumberPlayer2Score)
             {
-                SceneManager.LoadScene(3);
-
                 PlayerWon = "Won";
+
+                SceneManager.LoadScene(3);
             }
 
             if (Score.NumberPlayer1Score == Score.NumberPlayer2Score)
             {
-                SceneManager.LoadScene(3);
-            }
+                if (Score.TimeNumber1 > Score.TimeNumber2)
+                {
+                    PlayerWon = "Won";
 
+                    SceneManager.LoadScene(3);
+                }
+
+                else if (Score.TimeNumber1 < Score.TimeNumber2)
+                {
+                    PlayerWon = "Lose";
+
+                    SceneManager.LoadScene(3);
+                }
+
+                else
+                {
+                    PlayerWon = "Tie";
+
+                    SceneManager.LoadScene(3);
+                }
+            }
 
             if (Score.NumberPlayer1Score < Score.NumberPlayer2Score)
             {
-                SceneManager.LoadScene(3);
+                PlayerWon = "Lose";
 
-                PlayerWon = "Lost";
+                SceneManager.LoadScene(3);
             }
         }
     }
+
 
     public IEnumerator GetAnswer(int AnswerId)
     {
@@ -138,8 +152,6 @@ public class QA : MonoBehaviour
         else
         {
             // Show results as text
-            //Debug.Log(www.downloadHandler.text);
-
             string[] items = www.downloadHandler.text.Trim('[', ']').Split(',');
             for (int i = 0; i < items.Length; i++)
             {
@@ -306,11 +318,12 @@ public class QA : MonoBehaviour
         }
 
         StartCoroutine(CheckAnswer(QuestionsId, AnswerId));
+        StartCoroutine(Score.UpdatTime(SumTime));
         AnswerId += 1;
         QuestionsId += 1;
 
         SumTime += (int)tIMER.PlayerTimer;
-        Debug.Log(SumTime);
+
         tIMER.PlayerTimer = 10;
     }
 }
